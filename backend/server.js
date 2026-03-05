@@ -33,10 +33,17 @@ app.use(express.json());
 // =====================================================
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "cafeteria"
+  
+import 'dotenv/config';
+
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
+});
+
 });
 
 db.connect(err => {
@@ -316,7 +323,11 @@ app.use("/relatorios", relatoriosRoutes(db));
 
 console.log("ROTAS REGISTRADAS:", app._router.stack.length);
 
-app.listen(3001, () => {
-  console.log("🚀 Servidor rodando em http://localhost:3001");
+
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(">>> SERVER CAFETERIA ATIVO - VERSÃO ESTÁVEL 19/12/2025 <<<");
 });
+
